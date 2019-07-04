@@ -1,4 +1,4 @@
-package com.example.myapp;
+package com.dinganddone.dingdone;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
