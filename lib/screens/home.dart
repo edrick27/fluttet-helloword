@@ -23,8 +23,10 @@ const List<Widget> _widgetOptions = <Widget>[
   ),
 ];
 
-class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  static String tag = 'home-page';
+
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -32,7 +34,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

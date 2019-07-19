@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './screens/home.dart';
+import './screens/login.dart';
+import './routes.dart';
 
 void main() => runApp(MyApp());
 const MaterialColor white = const MaterialColor(
@@ -17,6 +18,7 @@ const MaterialColor white = const MaterialColor(
     900: const Color(0xFFFFFFFF),
   },
 );
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -26,7 +28,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: white,
       ),
-      home: Home(title: 'DingDONE'),
+      home: LoginPage(),
+      routes: routes,
+      // home: Home(title: 'DingDONE'),
     );
   }
 }
