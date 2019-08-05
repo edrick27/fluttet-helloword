@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+class Person {
+  String id;
+  String name;
+  String hours_week;
+  String hours_day;
+  Person({this.id, this.name, this.hours_week, this.hours_day});
+}
+
 int _selectedIndex = 0;
+final List<Person> persons = [
+  new Person(id: "1", name: "Pedro Perez", hours_week: "40", hours_day: "8"),
+  new Person(id: "1", name: "Juan Cascante", hours_week: "34", hours_day: "3"),
+  new Person(
+      id: "1", name: "Carlos limosner", hours_week: "32", hours_day: "5"),
+  new Person(id: "1", name: "Ricard Lopez", hours_week: "45", hours_day: "8"),
+];
+
 const TextStyle optionStyle =
     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-const List<Widget> _widgetOptions = <Widget>[
-  Text(
-    'Index 0: Home',
-    style: optionStyle,
-  ),
-  Text(
-    'Index 1: Business',
-    style: optionStyle,
-  ),
-  Text(
-    'Index 2: School',
-    style: optionStyle,
-  ),
-  Text(
-    'Index 3: dade',
-    style: optionStyle,
-  ),
-];
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -41,19 +39,52 @@ class _HomeState extends State<HomePage> {
     });
   }
 
+  void _modalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.music_note),
+                    title: new Text('Music'),
+                    onTap: () => {}),
+                new TextField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Enter a search term'
+                  ),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: new Image.asset(
-          'assets/images/logo.png',
-          width: 190, 
-          height: 30, 
-          fit: BoxFit.cover
-        ),
+        title: new Image.asset('assets/images/logo.png',
+            width: 190, height: 30, fit: BoxFit.cover),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: ListView.builder(
+        itemCount: persons.length,
+        itemBuilder: (context, position) {
+          return new GestureDetector(
+              child: Card(
+                child: Container(
+                    child: Column(children: [
+                  Text("Nombre: " + persons[position].name),
+                  Text("Horas semanales: " + persons[position].hours_week),
+                  Text("Horas de hoy: " + persons[position].hours_day)
+                ])),
+              ),
+              onTap: () {
+                _modalBottomSheet(context);
+              });
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

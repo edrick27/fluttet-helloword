@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/home.dart';
+import '../services/login.service.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -45,7 +46,8 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () {
+        onPressed: () async {
+          // LoginService.login();
           Navigator.of(context).pushNamedAndRemoveUntil(HomePage.tag, (Route<dynamic> route) => false);
         },
         padding: EdgeInsets.all(12),
