@@ -14,10 +14,30 @@ class Person {
 
 int _selectedIndex = 0;
 final List<Person> persons = [
-  new Person(id: "1", name: "Pedro Perez", avatar: "https://picsum.photos/id/4/350/350", hoursweek: "40", hoursday: "8"),
-  new Person(id: "1", name: "Juan Cascante", avatar: "https://picsum.photos/id/5/350/350", hoursweek: "34", hoursday: "3"),
-  new Person(id: "1", name: "Carlos limosner", avatar: "https://picsum.photos/id/6/350/350", hoursweek: "32", hoursday: "5"),
-  new Person(id: "1", name: "Ricard Lopez", avatar: "https://picsum.photos/id/7/350/350", hoursweek: "45", hoursday: "8"),
+  new Person(
+      id: "1",
+      name: "Pedro Perez",
+      avatar: "https://picsum.photos/id/4/350/350",
+      hoursweek: "40",
+      hoursday: "8"),
+  new Person(
+      id: "1",
+      name: "Juan Cascante",
+      avatar: "https://picsum.photos/id/5/350/350",
+      hoursweek: "34",
+      hoursday: "3"),
+  new Person(
+      id: "1",
+      name: "Carlos limosner",
+      avatar: "https://picsum.photos/id/6/350/350",
+      hoursweek: "32",
+      hoursday: "5"),
+  new Person(
+      id: "1",
+      name: "Ricard Lopez",
+      avatar: "https://picsum.photos/id/7/350/350",
+      hoursweek: "45",
+      hoursday: "8"),
 ];
 
 const TextStyle optionStyle =
@@ -50,25 +70,22 @@ class _HomeState extends State<HomePage> {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.save),
-                  title: Text('Pedro Perez'),
-                  onTap: () => {}
-                ),
+                    leading: Icon(Icons.save),
+                    title: Text('Pedro Perez'),
+                    onTap: () => {}),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 40,
-                    top: 0,
-                    right: 40,
-                    bottom: 0,
-                  ),
-                  child: TextField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Digite las horas de hoy.'
+                    padding: const EdgeInsets.only(
+                      left: 40,
+                      top: 0,
+                      right: 40,
+                      bottom: 0,
                     ),
-                  )
-                )
+                    child: TextField(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Digite las horas de hoy.'),
+                    ))
               ],
             ),
           );
@@ -82,51 +99,75 @@ class _HomeState extends State<HomePage> {
         title: new Image.asset('assets/images/logo.png',
             width: 190, height: 30, fit: BoxFit.cover),
       ),
-      body: ListView.builder(
-        itemCount: persons.length,
-        itemBuilder: (context, position) {
-          return new GestureDetector(
-                child: Card(
-                  child: Slidable(
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.25,
-                    child:ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.indigoAccent,
-                        backgroundImage: NetworkImage( 
-                          '${persons[position].avatar.toString()}',
-                        ),
-                        foregroundColor: Colors.white,
-                        radius: 25.0,
-                      ),
-                      title: Text('Nombre: ${persons[position].name.toString()}'),
-                      subtitle: Text('Horas: ${persons[position].hoursday.toString()}'),
+      body: Column(children: <Widget>[
+        Container(
+          height: 70,
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  
+                },
+                // controller: editingController,
+                decoration: InputDecoration(
+                        labelText: "Search",
+                        hintText: "Search",
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(25.0))
+                        )
                     ),
-                    actions: <Widget>[
-                      IconSlideAction(
-                        caption: 'Detalles',
-                        color: Colors.blue,
-                        icon: Icons.description,
-                        onTap: () => {
-                          // print('This will be logged to the console in the browser.')
-                          Navigator.of(context).pushNamed(DetailsPage.tag)
-                        },
-                      ),
-                      IconSlideAction(
-                        caption: 'más',
-                        color: Colors.indigo,
-                        icon: Icons.more_horiz,
-                        onTap: () => {},
-                      )
-                    ]
-                  ),
-                ),
-              onTap: () {
-                _modalBottomSheet(context);
-              }
-          );
-        },
-      ),
+              ),
+            ),
+        ),
+        Container(
+            height: 300,
+            child: ListView.builder(
+              itemCount: persons.length,
+              itemBuilder: (context, position) {
+                return new GestureDetector(
+                    child: Card(
+                      child: Slidable(
+                          actionPane: SlidableDrawerActionPane(),
+                          actionExtentRatio: 0.25,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.indigoAccent,
+                              backgroundImage: NetworkImage(
+                                '${persons[position].avatar.toString()}',
+                              ),
+                              foregroundColor: Colors.white,
+                              radius: 25.0,
+                            ),
+                            title: Text(
+                                'Nombre: ${persons[position].name.toString()}'),
+                            subtitle: Text(
+                                'Horas: ${persons[position].hoursday.toString()}'),
+                          ),
+                          actions: <Widget>[
+                            IconSlideAction(
+                              caption: 'Detalles',
+                              color: Colors.blue,
+                              icon: Icons.description,
+                              onTap: () => {
+                                // print('This will be logged to the console in the browser.')
+                                Navigator.of(context).pushNamed(DetailsPage.tag)
+                              },
+                            ),
+                            IconSlideAction(
+                              caption: 'más',
+                              color: Colors.indigo,
+                              icon: Icons.more_horiz,
+                              onTap: () => {},
+                            )
+                          ]),
+                    ),
+                    onTap: () {
+                      _modalBottomSheet(context);
+                    });
+              },
+            ))
+      ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
