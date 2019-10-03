@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:myapp/screens/details.dart';
+import 'package:myapp/screens/listPerson.dart';
+import 'package:myapp/database/database_helper.dart';
+import 'package:myapp/database/model/person.dart';
 
-class Person {
+class Person2 {
   String id;
   String name;
   String avatar;
   String hoursweek;
   String hoursday;
-  Person({this.id, this.name, this.avatar, this.hoursweek, this.hoursday});
+  Person2({this.id, this.name, this.avatar, this.hoursweek, this.hoursday});
 }
 
 int _selectedIndex = 0;
-final List<Person> persons = [
-  new Person(
+final List<Person2> persons = [
+  new Person2(
       id: "1",
       name: "Pedro Perez",
       avatar: "https://picsum.photos/id/4/350/350",
       hoursweek: "40",
       hoursday: "8"),
-  new Person(
+  new Person2(
       id: "1",
       name: "Juan Cascante",
       avatar: "https://picsum.photos/id/5/350/350",
       hoursweek: "34",
       hoursday: "3"),
-  new Person(
+  new Person2(
       id: "1",
       name: "Carlos limosner",
       avatar: "https://picsum.photos/id/6/350/350",
       hoursweek: "32",
       hoursday: "5"),
-  new Person(
+  new Person2(
       id: "1",
       name: "Ricard Lopez",
       avatar: "https://picsum.photos/id/7/350/350",
@@ -55,6 +56,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -92,6 +94,11 @@ class _HomeState extends State<HomePage> {
         });
   }
 
+  Future<List<Person>> getPerson() {
+    var db = new DatabaseHelper();
+    return db.getPerson();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,51 +129,17 @@ class _HomeState extends State<HomePage> {
         ),
         Container(
             height: 300,
-            child: ListView.builder(
-              itemCount: persons.length,
-              itemBuilder: (context, position) {
-                return new GestureDetector(
-                    child: Card(
-                      child: Slidable(
-                          actionPane: SlidableDrawerActionPane(),
-                          actionExtentRatio: 0.25,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.indigoAccent,
-                              backgroundImage: NetworkImage(
-                                '${persons[position].avatar.toString()}',
-                              ),
-                              foregroundColor: Colors.white,
-                              radius: 25.0,
-                            ),
-                            title: Text(
-                                'Nombre: ${persons[position].name.toString()}'),
-                            subtitle: Text(
-                                'Horas: ${persons[position].hoursday.toString()}'),
-                          ),
-                          actions: <Widget>[
-                            IconSlideAction(
-                              caption: 'Detalles',
-                              color: Colors.blue,
-                              icon: Icons.description,
-                              onTap: () => {
-                                // print('This will be logged to the console in the browser.')
-                                Navigator.of(context).pushNamed(DetailsPage.tag)
-                              },
-                            ),
-                            IconSlideAction(
-                              caption: 'más',
-                              color: Colors.indigo,
-                              icon: Icons.more_horiz,
-                              onTap: () => {},
-                            )
-                          ]),
-                    ),
-                    onTap: () {
-                      _modalBottomSheet(context);
-                    });
+            child: FutureBuilder<List<Person>>(
+              future: getPerson(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                var data = snapshot.data;
+                return snapshot.hasData
+                    ? new PersonList(data)
+                    : new Center(child: new CircularProgressIndicator());
               },
-            ))
+            )
+        )
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
